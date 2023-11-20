@@ -8,7 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import  com.akshayraoch.drivervigilanceassurance.ui.MainScreen
-import  com.akshayraoch.drivervigilanceassurance.ui.theme.JetpackComposeMLKitTutorialTheme
+import com.akshayraoch.drivervigilanceassurance.ui.theme.DriverVigilanceAssuranceSystemTheme
+
 
 class MainActivity : ComponentActivity() {
 
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            JetpackComposeMLKitTutorialTheme {
+            DriverVigilanceAssuranceSystemTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

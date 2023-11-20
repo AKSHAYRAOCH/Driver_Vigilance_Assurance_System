@@ -72,7 +72,7 @@ private fun CameraContent() {
                         implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                         scaleType = PreviewView.ScaleType.FILL_START
                     }.also { previewView ->
-                        startTextRecognition(
+                        startFaceRecognition(
                             context = context,
                             cameraController = cameraController,
                             lifecycleOwner = lifecycleOwner,
@@ -94,7 +94,7 @@ private fun CameraContent() {
     }
 }
 
-private fun startTextRecognition(
+private fun startFaceRecognition(
     context: Context,
     cameraController: LifecycleCameraController,
     lifecycleOwner: LifecycleOwner,
