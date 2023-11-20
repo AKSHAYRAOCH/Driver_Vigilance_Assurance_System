@@ -2,6 +2,7 @@ package  com.akshayraoch.drivervigilanceassurance.ui.camera
 
 import android.content.Context
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.camera.core.AspectRatio
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.akshayraoch.drivervigilanceassurance.R
 
 @Composable
 fun CameraScreen() {
@@ -41,7 +43,7 @@ private fun CameraContent() {
     val context: Context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
     val cameraController: LifecycleCameraController = remember { LifecycleCameraController(context) }
-    var detectedText: String by remember { mutableStateOf("No text detected yet..") }
+    var detectedText: String by remember { mutableStateOf("No faces detected yet..") }
 
     fun onTextUpdated(updatedText: String) {
         detectedText = updatedText
@@ -98,12 +100,14 @@ private fun startTextRecognition(
     lifecycleOwner: LifecycleOwner,
     previewView: PreviewView,
     onDetectedTextUpdated: (String) -> Unit
+
 ) {
 
     cameraController.imageAnalysisTargetSize = CameraController.OutputSize(AspectRatio.RATIO_16_9)
     cameraController.setImageAnalysisAnalyzer(
         ContextCompat.getMainExecutor(context),
-        FaceRecognitionAnalyzer(onDetectedTextUpdated = onDetectedTextUpdated)
+
+        FaceRecognitionAnalyzer(onDetectedTextUpdated = onDetectedTextUpdated,context)
     )
 
     cameraController.bindToLifecycle(lifecycleOwner)

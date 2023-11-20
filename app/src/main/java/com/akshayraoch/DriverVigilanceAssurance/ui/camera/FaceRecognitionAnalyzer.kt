@@ -1,22 +1,28 @@
 package com.akshayraoch.drivervigilanceassurance.ui.camera
 
+import android.content.Context
 import android.media.Image
+import android.media.MediaPlayer
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import com.akshayraoch.drivervigilanceassurance.R
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
+
 import kotlinx.coroutines.launch
 
 
 class FaceRecognitionAnalyzer(
     private val onDetectedTextUpdated: (String) -> Unit
+, context : Context
 ) : ImageAnalysis.Analyzer {
 
     companion object {
@@ -30,6 +36,9 @@ class FaceRecognitionAnalyzer(
         .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
         .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
         .build()
+
+
+    val mediaPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.alarm)
 
     val detector = FaceDetection.getClient(highAccuracyOpts)
 
@@ -48,16 +57,25 @@ class FaceRecognitionAnalyzer(
                     }
                     for (face in faces) {
 
-                        if(face.rightEyeOpenProbability!=null) {
+                        if(faces[0].rightEyeOpenProbability!=null) {
                             rightEyeOpenProb = face.rightEyeOpenProbability!!
                         }
-                        if(face.leftEyeOpenProbability!=null){
+                        if(faces[0].leftEyeOpenProbability!=null){
                             leftEyeOpenProb = face.leftEyeOpenProbability!!
                         }
                         if(rightEyeOpenProb<0.3f && leftEyeOpenProb<0.3f) {
                             onDetectedTextUpdated("eyes are closed")
+                            mediaPlayer.start()
+                            println("audio is playing")
+
                         }else{
                             onDetectedTextUpdated("eyes are open")
+
+                            try{mediaPlayer.stop()
+                                mediaPlayer.prepare()}
+                            catch(e:Error){
+                                println(e)
+                            }
                         }
                     }
                 }
